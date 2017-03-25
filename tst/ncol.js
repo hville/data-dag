@@ -1,12 +1,12 @@
 var t = require('cotest'),
-		IDAG = require('../src/idag')
+		DAG = require('../index')
 /*
 Requirements
 - add an node column
 - node operations: has, get, set, add, del, forEach
 */
 t('node-set', function() {
-	var graph = new IDAG(),
+	var graph = new DAG(),
 			node0 = graph.addNodeData('0', function() { return this.size }),
 			nodeA = graph.addNodeData('A', function() { return 'A' })
 

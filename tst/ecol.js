@@ -1,11 +1,11 @@
 var t = require('cotest'),
-		IDAG = require('../src/idag')
+		DAG = require('../index')
 
 t('base-edge', function() {
-	var graph = new IDAG(),
+	var graph = new DAG(),
 			edge0 = graph.addEdgeData('0', function() { return this.size }),
 			edgeA = graph.addEdgeData('A', function() { return 'A' })
-	for (var i=0; i<4; ++i) graph.addNode()
+	for (var i=0; i<4; ++i) graph.addNode(i)
 
 	t('===', edge0.size, 0)
 	t('===', edge0.add(0,1, 0), true)

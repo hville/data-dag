@@ -13,7 +13,7 @@ NCol.prototype = {
 		return this.graph.hasNode(nk)
 	},
 	get: function get(nk) {
-		return this.data[this.graph.indexOfNode(nk)]
+		return this.data[this.graph.getNode(nk).i]
 	},
 	add: function add(nk, val) {
 		var graph = this.graph,
@@ -23,18 +23,14 @@ NCol.prototype = {
 		return true
 	},
 	set: function set(nk, val) {
-		var idx = this.graph.indexOfNode(nk)
-		if (idx === -1) return this.add(nk, val)
-		else this.data[idx] = val
+		var node = this.graph.getNode(nk)
+		if (!node) return this.add(nk, val)
+		else this.data[node.i] = val
 		return true
 	},
 	del: function del(nk) {
 		return this.graph.delNode(nk)
-	},
-	reduce: function(fcn, res) {
-		var data = this.data,
-				arrK = this.graph._arrK
-		for (var ki=0; ki<arrK.length; ++ki) res = fcn.call(this, res, data[ki], arrK[ki])
-		return res
 	}
+	//TODO consider forEach((v,w,s)=>void)
+	//TODO consider reduce((r,v,w,s)=>r)
 }

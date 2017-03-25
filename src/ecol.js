@@ -13,7 +13,7 @@ ECol.prototype = {
 		return this.graph.hasEdge(wk, sk)
 	},
 	get: function get(wk, sk) {
-		return this.data[this.graph.indexOfEdge(wk, sk)]
+		return this.data[this.graph.getEdge(wk, sk).i]
 	},
 	add: function add(wk, sk, val) {
 		var graph = this.graph,
@@ -23,13 +23,15 @@ ECol.prototype = {
 		return true
 	},
 	set: function set(wk, sk, val) {
-		var idx = this.graph.indexOfEdge(wk, sk)
-		if (idx === -1) return this.add(wk, sk, val)
-		else this.data[idx] = val
+		var edge = this.graph.getEdge(wk, sk)
+		if (!edge) return this.add(wk, sk, val)
+		else this.data[edge.i] = val
 		return true
 	},
 	del: function del(wk, sk) {
 		return this.graph.delEdge(wk, sk)
 	}
+	//TODO consider forEach((v,w,s)=>void)
+	//TODO consider reduce((r,v,w,s)=>r)
 }
-//TODO add forEach and reduce once well index and rank are split
+

@@ -1,28 +1,28 @@
 {
-  "name": "i-set",
-  "version": "0.2.1",
-  "description": "indexed Set of ordered, sortable unique values with an API similar to native Set",
+  "name": "data-dag",
+  "version": "0.1.0",
+  "description": "directed acylic graph with row or column data fields",
   "keywords": [
-    "array",
-    "set",
-    "indexed",
-    "ordered",
-    "unique"
+    "graph",
+    "dag",
+    "toposort",
+    "topological",
+    "directed",
+    "acylic"
   ],
   "author": "Hugo Villeneuve",
   "main": "./index.js",
-  "dependencies": {
-    "array-order": "^0.6.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "cotest": "^2.1.0"
   },
   "scripts": {
-    "test": "cotest tst"
+    "test": "cotest tst",
+    "min": "webpack --entry ./src/kdag.js --output-filename ./bld/min.js -p"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hville/i-set.git"
+    "url": "https://github.com/hville/data-dag.git"
   },
   "private": false,
   "license": "MIT",

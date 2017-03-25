@@ -1,50 +1,58 @@
 <!-- markdownlint-disable MD004 MD007 MD010 MD012 MD041 MD022 MD024 MD032 MD036 -->
 
-# i-set
+# data-dag
 
-*indexed set of ordered unique values that can be re-sorted or re-ordered with an API similar to the native javascript Set*
+*directed acylic graph with row or column data fields*
 
 ## Example
 
 ```javascript
-var ISet = require('i-set'),
-    iset = new ISet(['a', 'b'])
+var CDAG = require('data-dag')
 
-iset.add('c').add('d')
-iset.has('e') // false
-iset.index(1) // 'b'
-iset.indexOf('b') // 1
+var dag = new IDag(),
+		nodeCol = dag.addNodeData('nodeIndex', function() { return this.size }),
+		edgeCol = dag.addEdgeData('edgeIndex', function() { return this.size })
 
-iset.forEach(function(k,i) { console.log(i, ':', k)}) // 0:a 1:b 2:c 3:d
+dag.addNode('A')
+nodeCol.add('B', 1)
+dag.addNode('C')
 
-iset.order([4,3,2,1])
-iset.forEach(function(k,i) { console.log(i, ':', k)}) // 0:d 1:c 2:b 3:a
+dag.addEdge('D', 'A')
+dag.addEdge('D', 'C')
+dag.addEdge('B', 'A')
+dag.addEdge('C', 'B')
 
-iset.sort()
-iset.forEach(function(k,i) { console.log(i, ':', k)}) // 0:a 1:b 2:c 3:d
-
-iset.clear()
+dag.topoSort()
 ```
+
+## Notes and Features
+
+* Base case is for a column structure to easy send and receive columnar data
+* Data can still be in a row-first format by having a single column with multiple fields
+
 
 ## API
 
-`var iset = new ISet([values][, observers])`
+Graph structure
 
-In short, the API is similar to the Set API with the following exceptions:
-* `index(index) => value` (Array-like)
-* `indexOf(value) => index` (Array-like)
-* `sort([function]) => self` (Array-like)
-* `order(Array) => self`
-* forEach behaves like in Arrays (`callback(value, index, array)`)
+* `dag.N` number of nodes
+* `dag.hasNode(nodeKey)` Boolean
+* `dag.getNode(nodeKey)` Node Object `{i, s, wells}`
+* `dag.addNode(nodeKey)` Boolean hasChanged
+* `dag.delNode(nodeKey)` Boolean hasChanged
+* `dag.E` number of edges
+* `dag.hasEdge(wellNodeKey, sinkNodeKey)` Boolean
+* `dag.getEdge(wellNodeKey, sinkNodeKey)` Edge Object `{i, s, well, sink}`
+* `dag.addEdge(wellNodeKey, sinkNodeKey)` Boolean hasChanged
+* `dag.delEdge(wellNodeKey, sinkNodeKey)` Boolean hasChanged
+* `dag.toposort()` Boolean - reorders all nodes, edges and datacolunms
 
-Internally there is a `._map` property with a native Map (value:index) and a `_arr` property with a native Array (index:value)
+Data structure
 
-Observers are optional functions called when the set composition changes:
-* `observers.add(value, index)` called after iset.add(value) adds a value
-* `observers.delete(value, index)` called after iset.delete(value) deletes a value
-* `observers.clear()` called after iset.clear() deletes values
-
-The observers are not called if no changes are made
+* `dag.addNodeData(name, getter)` nodeData {has, add, get, delete}
+* `dag.delNodeData(name, getter)` nodeData {has, add, get, delete}
+* `dag.addEdgeData(name, getter)` edgeData {has, add, get, delete}
+* `dag.delEdgeData(name, getter)` edgeData {has, add, get, delete}
 
 ## License
 

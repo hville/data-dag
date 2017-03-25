@@ -1,0 +1,32 @@
+{
+  "name": "i-set",
+  "version": "0.2.1",
+  "description": "indexed Set of ordered, sortable unique values with an API similar to native Set",
+  "keywords": [
+    "array",
+    "set",
+    "indexed",
+    "ordered",
+    "unique"
+  ],
+  "author": "Hugo Villeneuve",
+  "main": "./index.js",
+  "dependencies": {
+    "array-order": "^0.6.0"
+  },
+  "devDependencies": {
+    "cotest": "^2.1.0"
+  },
+  "scripts": {
+    "test": "cotest tst"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hville/i-set.git"
+  },
+  "private": false,
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
+}

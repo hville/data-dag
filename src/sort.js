@@ -1,4 +1,4 @@
-module.exports = function orderI(array, order) {
+module.exports = function sort(order, array) {
 	var len = order.length
 	if (array.length !== len) throw Error('length mismatch')
 
@@ -12,5 +12,5 @@ module.exports = function orderI(array, order) {
 		}
 		array[j] = temp
 	}
-	return array
+	return order
 }

@@ -1,5 +1,5 @@
 var t = require('cotest'),
-		s = require('../src/sort')
+		sort = require('../src/sort')
 
 var samples = ['a','b','c','d','e','f']
 
@@ -14,7 +14,8 @@ function tester(ranks, msg) {
 	ranks.forEach(function(v,i) {
 		order[v].s = i
 	})
-	t('{==}', s(mixed, order), source, msg + ranks.join('-'))
+	sort(order, mixed)
+	t('{==}', mixed, source, msg + ranks.join('-'))
 }
 
 t('sort - valid order', function() {

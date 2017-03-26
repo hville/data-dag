@@ -30,16 +30,16 @@ t('ddag - graph operations', function() {
 	t('===', ctx.delNode(1), false, 'edges must be deleted first')
 })
 t('ddag - toposort integrity', function() {
-	var ctx = new DAG(),
-			nodeIdx = ctx.addNodeData('nodeIndex', function() { return ctx.N-1 }),
-			edgeIdx = ctx.addEdgeData('edgeIndex', function() { return ctx.E-1 })
+	var ctx = new DAG()
+	ctx.addNData('nodeIdx', function() { return ctx.N-1 })
+	ctx.addEData('edgeIdx', function() { return ctx.E-1 })
 
 	t('===', ctx.addNode('A'), true)
 	t('===', ctx.addNode('B'), true)
 	t('===', ctx.addNode('C'), true)
 	t('===', ctx.addNode('D'), true)
 	t('===', ctx.nodes.reduce(function(r, n, i){return r+=''+n.k+n.i+i}, ''), 'A00B11C22D33')
-	t('===', nodeIdx.data.reduce(function(r, v, i){return r+=''+v+i}, ''), '00112233')
+	t('===', ctx.nData.nodeIdx.reduce(function(r, v, i){return r+=''+v+i}, ''), '00112233')
 
 	//inverted edges in shuffled order
 	t('===', ctx.addEdge('D', 'A'), true)//3
@@ -47,12 +47,10 @@ t('ddag - toposort integrity', function() {
 	t('===', ctx.addEdge('D', 'B'), true)//1
 	t('===', ctx.addEdge('B', 'A'), true)//4
 	t('===', ctx.addEdge('C', 'B'), true)//2
-	t('===', edgeIdx.data.reduce(function(str, k){return str+=k}, ''), '01234')
+	t('===', ctx.eData.edgeIdx.reduce(function(str, k){return str+=k}, ''), '01234')
 
 	//toposort
 	t('===', ctx.topoSort(), true)
 	t('===', ctx.nodes.reduce(function(r, n, i){return r+=''+n.k+n.i+i}, ''), 'D00C11B22A33')
-	t('===', nodeIdx.data.reduce(function(r, v, i){return r+=''+v+i}, ''), '30211203')
-	//t('===', nodeIdx.reduce(function(r, v, k){return r+=k+v}, ''), 'D3C2B1A0')
-	//t('===', edgeIdx.data.reduce(function(str, k){return str+=k}, ''), '12403')
+	t('===', ctx.nData.nodeIdx.reduce(function(r, v, i){return r+=''+v+i}, ''), '30211203')
 })

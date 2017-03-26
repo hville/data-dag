@@ -1,8 +1,6 @@
-var sort = require('./src/sort'),
+var topoSort = require('./src/topo'),
 		reduce = require('./src/reduce'),
-		NCol = require('./src/ncol'),
-		ECol = require('./src/ecol'),
-		topoRank = require('./src/topo')
+		topoRank = require('./src/rank')
 
 module.exports = DAG
 
@@ -11,8 +9,9 @@ function DAG() {
 	this.edges = [] //...of pairs [wi, si]
 	this.nKeys = new Map() // nodeKeys
 
-	this.nodeData = {}
-	this.edgeData = {}
+	this.nData = {}
+	this.eData = {}
+	this.rInit = new Map()
 }
 DAG.prototype = {
 	constructor: DAG,
@@ -63,7 +62,7 @@ DAG.prototype = {
 		}
 
 		// fix columns
-		reduce(this.edgeData, addRow, ei)
+		reduce(this.eData, addRow, this)
 		return true
 	},
 
@@ -87,7 +86,7 @@ DAG.prototype = {
 
 		// fixes edge indices & columns
 		for (var i=ie; i<edges.length; ++i) --edges[i].i
-		reduce(this.edgeData, delRow, ie)
+		reduce(this.eData, delRow, ie)
 		return true
 	},
 
@@ -113,7 +112,7 @@ DAG.prototype = {
 		nKeys.set(nk, node)
 		this.nodes[N] = node
 		// fix columns
-		reduce(this.nodeData, addRow, N)
+		reduce(this.nData, addRow, this)
 		return true
 	},
 	/**
@@ -135,80 +134,54 @@ DAG.prototype = {
 		var r = node.i
 		nodes.splice(r,1)
 		for (var j=0; j<nodes.length; ++j) if (nodes[j].i > r) --nodes[j].i
-		reduce(this.nodeData, delRow, r)
+		reduce(this.nData, delRow, r)
 		return true
 	},
 	// COLUMNS
-	addNodeData: addNodeData,
-	delNodeData: delNodeData,
-	addEdgeData: addEdgeData,
-	delEdgeData: delEdgeData,
-	// TOPOSORT
-	topoSort: function() {
-		var nodes = this.nodes,
-				edges = this.edges
-		// flip nodes: old:new => new:old and reorder keys and nodeColumns
-		nodes.forEach(setRank)
-		edges.forEach(setRank)
-		nodes.forEach(setFrom)
-		edges.forEach(setFrom)
-
-		// flip nodes: old:new => new:old and reorder keys and nodeColumns
-		reduce(this.nodeData, reorder, nodes)
-		sort(nodes, nodes)
-
-		// rank edges
-		reduce(this.edgeData, reorder, edges)
-		sort(edges, edges)
-
+	addNData: function addNData(name, setter) {
+		var rInit = this.rInit
+		if (rInit.has(name)) return false
+		var nCol = this.nData[name] = []
+		var init = setter || noop
+		rInit.set(name, init)
+		for (var i=0; i<this.nodes.length; ++i) nCol[i] = init.call(this,i)
 		return true
-	}
-}
-function reorder(nodes, set) {
-	sort(set.data, nodes)
-	return nodes
-}
-// METHODS
-function addNodeData(name, getter) {
-	return addData(this, this.nodeData, name, NCol, getter)
-}
-function addEdgeData(name, getter) {
-	return addData(this, this.edgeData, name, ECol, getter)
-}
-function delNodeData(name) {
-	return delData(this, this.nodeData, name)
-}
-function delEdgeData(name) {
-	return delData(this, this.edgeData, name)
-}
-// INTERNALS
-function addData(graph, dataSet, name, Constructor, getter) {
-	if (dataSet[name]) return null
-	return dataSet[name] = new Constructor(graph, name, getter)
-}
-function delData(graph, dataSet, name) {
-	var col = dataSet[name]
-	if (!col) return null
-	delete dataSet[name]
-	col.graph = null
-	return col
+	},
+	delNData: function delNData(name) {
+		var nData = this.nData
+		if (!nData[name]) return false
+		delete nData[name]
+		delete this.nInit[name]
+		return true
+	},
+	addEData: function addEData(name, setter) {
+		var rInit = this.rInit
+		if (rInit.has(name)) return false
+		var eCol = this.eData[name] = []
+		var init = setter || noop
+		rInit.set(name, init)
+		for (var i=0; i<this.edges.length; ++i) eCol[i] = init.call(this,i)
+		return true
+	},
+	delEData: function delECol(name) {
+		var eData = this.eData
+		if (!eData[name]) return false
+		delete eData[name]
+		delete this.eInit[name]
+		return true
+	},
+	topoSort: topoSort
 }
 function wellIndex(wn, sn) {
 	for (var i=0, wells=sn.wells; i<wells.length; ++i) if (wells[i].well === wn) return i
 	return -1
 }
-function addRow(r, set) {
-	set.data[r] = set.init()
+function noop(){}
+function delRow(r, col) {
+	col.splice(r, 1)
 	return r
 }
-function delRow(r, set) {
-	set.data.splice(r, 1)
-	return r
+function addRow(ctx, col, name) {
+	col.push(ctx.rInit.get(name).call(ctx, name, col.length))
+	return ctx
 }
-function setRank(v) {
-	v.i = v.s
-}
-function setFrom(v,i,a) {
-	a[v.i].s = i
-}
-

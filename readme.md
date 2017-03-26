@@ -9,13 +9,14 @@
 ```javascript
 var CDAG = require('data-dag')
 
+function initValueSetter(name, index, array) { return array.length }
+
 var dag = new IDag(),
-		nodeCol = dag.addNodeData('nodeIndex', function() { return this.size }),
-		edgeCol = dag.addEdgeData('edgeIndex', function() { return this.size })
+		nodeCol = dag.addNData('nodeIndex', initValueSetter),
+		edgeCol = dag.addEData('edgeIndex', initValueSetter)
 
 dag.addNode('A')
 dag.addNode('B')
-nodeCol.set('B', 1)
 dag.addNode('C')
 
 dag.addEdge('D', 'A')
@@ -23,7 +24,9 @@ dag.addEdge('D', 'C')
 dag.addEdge('B', 'A')
 dag.addEdge('C', 'B')
 
+console.log(dag.nData.nodeIndex.join('-')) // 1-2-3
 dag.topoSort()
+console.log(dag.nData.nodeIndex.join('-')) // 3-2-1
 ```
 
 ## Notes and Features
@@ -36,22 +39,23 @@ dag.topoSort()
 
 Graph structure
 
-* `dag.N` number of nodes
-* `dag.getNode(nodeKey)` Node Object `{i, s, wells}`
-* `dag.addNode(nodeKey)` Boolean hasChanged
-* `dag.delNode(nodeKey)` Boolean hasChanged
-* `dag.E` number of edges
-* `dag.getEdge(wellNodeKey, sinkNodeKey)` Edge Object `{i, s, well, sink}`
-* `dag.addEdge(wellNodeKey, sinkNodeKey)` Boolean hasChanged
-* `dag.delEdge(wellNodeKey, sinkNodeKey)` Boolean hasChanged
-* `dag.toposort()` Boolean - reorders all nodes, edges and datacolunms
-
-Data structure
-
-* `dag.addNodeData(name, getter)` nodeData {get, set}
-* `dag.delNodeData(name, getter)` nodeData {get, set}
-* `dag.addEdgeData(name, getter)` edgeData {get, set}
-* `dag.delEdgeData(name, getter)` edgeData {get, set}
+* Nodes
+  * `dag.N` number of nodes
+  * `dag.getNode(nodeKey)` Node Object `{i, s, wells}`
+  * `dag.addNode(nodeKey)` Boolean hasChanged
+  * `dag.delNode(nodeKey)` Boolean hasChanged
+* Edges
+  * `dag.E` number of edges
+  * `dag.getEdge(wellNodeKey, sinkNodeKey)` Edge Object `{i, s, well, sink}`
+  * `dag.addEdge(wellNodeKey, sinkNodeKey)` Boolean hasChanged
+  * `dag.delEdge(wellNodeKey, sinkNodeKey)` Boolean hasChanged
+* Data Columns
+  * `dag.addEData(name, initSetter)` Boolean hasChanged
+  * `dag.addNData(name, initSetter)` Boolean hasChanged
+  * `dag.delEData(name)` Boolean hasChanged
+  * `dag.delNData(name)` Boolean hasChanged
+* Common
+  * `dag.toposort()` Boolean hasChanged - reorders all nodes, edges and datacolunms
 
 ## License
 

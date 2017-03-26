@@ -2,7 +2,6 @@ module.exports = ECol
 
 function ECol(graph, name, getter) {
 	this.graph = graph
-	this.name = name
 	this.init = getter
 	this.data = []
 }
@@ -13,16 +12,9 @@ ECol.prototype = {
 		var edge = this.graph.getEdge(wk, sk)
 		if (edge) return this.data[edge.i]
 	},
-	add: function add(wk, sk, val) {
-		var graph = this.graph,
-				data = this.data
-		if (!graph.addEdge(wk, sk)) return false
-		data[data.length-1] = val
-		return true
-	},
 	set: function set(wk, sk, val) {
 		var edge = this.graph.getEdge(wk, sk)
-		if (!edge) return this.add(wk, sk, val)
+		if (!edge) return false
 		else this.data[edge.i] = val
 		return true
 	},

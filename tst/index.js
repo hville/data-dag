@@ -35,9 +35,9 @@ t('ddag - toposort integrity', function() {
 			edgeIdx = ctx.addEdgeData('edgeIndex', function() { return this.size })
 
 	t('===', ctx.addNode('A'), true)
-	t('===', nodeIdx.add('B', 1), true)
+	t('===', ctx.addNode('B'), true)
 	t('===', ctx.addNode('C'), true)
-	t('===', nodeIdx.add('D', 3), true)
+	t('===', ctx.addNode('D'), true)
 	t('===', ctx.nodes.reduce(function(r, n, i){return r+=''+n.k+n.i+i}, ''), 'A00B11C22D33')
 	t('===', nodeIdx.data.reduce(function(r, v, i){return r+=''+v+i}, ''), '00112233')
 

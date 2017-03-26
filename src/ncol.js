@@ -2,7 +2,6 @@ module.exports = NCol
 
 function NCol(graph, name, getter) {
 	this.graph = graph
-	this.name = name
 	this.init = getter
 	this.data = []
 }
@@ -13,16 +12,9 @@ NCol.prototype = {
 		var node = this.graph.getNode(nk)
 		if (node) return this.data[node.i]
 	},
-	add: function add(nk, val) {
-		var graph = this.graph,
-				data = this.data
-		if (!graph.addNode(nk)) return false
-		data[data.length-1] = val
-		return true
-	},
 	set: function set(nk, val) {
 		var node = this.graph.getNode(nk)
-		if (!node) return this.add(nk, val)
+		if (!node) return false
 		else this.data[node.i] = val
 		return true
 	},

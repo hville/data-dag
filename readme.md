@@ -14,7 +14,8 @@ var dag = new IDag(),
 		edgeCol = dag.addEdgeData('edgeIndex', function() { return this.size })
 
 dag.addNode('A')
-nodeCol.add('B', 1)
+dag.addNode('B')
+nodeCol.set('B', 1)
 dag.addNode('C')
 
 dag.addEdge('D', 'A')
@@ -47,10 +48,10 @@ Graph structure
 
 Data structure
 
-* `dag.addNodeData(name, getter)` nodeData {add, get, delete}
-* `dag.delNodeData(name, getter)` nodeData {add, get, delete}
-* `dag.addEdgeData(name, getter)` edgeData {add, get, delete}
-* `dag.delEdgeData(name, getter)` edgeData {add, get, delete}
+* `dag.addNodeData(name, getter)` nodeData {get, set, delete}
+* `dag.delNodeData(name, getter)` nodeData {get, set, delete}
+* `dag.addEdgeData(name, getter)` edgeData {get, set, delete}
+* `dag.delEdgeData(name, getter)` edgeData {get, set, delete}
 
 ## License
 

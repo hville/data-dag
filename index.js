@@ -20,20 +20,6 @@ DAG.prototype = {
 	get N() { return this.nodes.length },
 
 	/**
-	* @function hasEdge
-	* @param  {*} wk well node key
-	* @param  {*} sk sink well key
-	* @return {boolean} exists
-	*/
-	hasEdge: function hasEdge(wk, sk) {
-		var mapK = this.nKeys,
-				wn = mapK.get(wk),
-				sn = mapK.get(sk)
-		if (!wn || !sn || wellIndex(wn, sn) === -1) return false
-		return true
-	},
-
-	/**
 	* @function getEdge
 	* @param  {*} wk well node key
 	* @param  {*} sk sink well key
@@ -105,14 +91,6 @@ DAG.prototype = {
 		return true
 	},
 
-	/**
-	* @function hasNode
-	* @param  {*} nk node key
-	* @return {boolean} exists
-	*/
-	hasNode: function hasNode(nk) {
-		return this.nKeys.has(nk)
-	},
 	/**
 	* @function getNode
 	* @param  {*} nk node key

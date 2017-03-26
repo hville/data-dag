@@ -9,11 +9,9 @@ function NCol(graph, name, getter) {
 NCol.prototype = {
 	constructor: NCol,
 	get size() { return this.data.length },
-	has: function has(nk) {
-		return this.graph.hasNode(nk)
-	},
 	get: function get(nk) {
-		return this.data[this.graph.getNode(nk).i]
+		var node = this.graph.getNode(nk)
+		if (node) return this.data[node.i]
 	},
 	add: function add(nk, val) {
 		var graph = this.graph,

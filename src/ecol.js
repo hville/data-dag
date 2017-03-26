@@ -9,11 +9,9 @@ function ECol(graph, name, getter) {
 ECol.prototype = {
 	constructor: ECol,
 	get size() { return this.data.length },
-	has: function has(wk, sk) {
-		return this.graph.hasEdge(wk, sk)
-	},
 	get: function get(wk, sk) {
-		return this.data[this.graph.getEdge(wk, sk).i]
+		var edge = this.graph.getEdge(wk, sk)
+		if (edge) return this.data[edge.i]
 	},
 	add: function add(wk, sk, val) {
 		var graph = this.graph,

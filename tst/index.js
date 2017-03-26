@@ -23,10 +23,6 @@ t('ddag - graph operations', function() {
 	t('===', ctx.E, 3)
 	t('===', ctx.addEdge(3,0), true)
 
-	//hasEdge
-	t('===', ctx.hasEdge(3,1), true)
-	t('===', ctx.hasEdge(0,3), false)
-
 	//resort
 	t('===', ctx.addEdge(2,0), true)
 

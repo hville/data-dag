@@ -36,12 +36,10 @@ dag.topoSort()
 Graph structure
 
 * `dag.N` number of nodes
-* `dag.hasNode(nodeKey)` Boolean
 * `dag.getNode(nodeKey)` Node Object `{i, s, wells}`
 * `dag.addNode(nodeKey)` Boolean hasChanged
 * `dag.delNode(nodeKey)` Boolean hasChanged
 * `dag.E` number of edges
-* `dag.hasEdge(wellNodeKey, sinkNodeKey)` Boolean
 * `dag.getEdge(wellNodeKey, sinkNodeKey)` Edge Object `{i, s, well, sink}`
 * `dag.addEdge(wellNodeKey, sinkNodeKey)` Boolean hasChanged
 * `dag.delEdge(wellNodeKey, sinkNodeKey)` Boolean hasChanged
@@ -49,10 +47,10 @@ Graph structure
 
 Data structure
 
-* `dag.addNodeData(name, getter)` nodeData {has, add, get, delete}
-* `dag.delNodeData(name, getter)` nodeData {has, add, get, delete}
-* `dag.addEdgeData(name, getter)` edgeData {has, add, get, delete}
-* `dag.delEdgeData(name, getter)` edgeData {has, add, get, delete}
+* `dag.addNodeData(name, getter)` nodeData {add, get, delete}
+* `dag.delNodeData(name, getter)` nodeData {add, get, delete}
+* `dag.addEdgeData(name, getter)` edgeData {add, get, delete}
+* `dag.delEdgeData(name, getter)` edgeData {add, get, delete}
 
 ## License
 

@@ -20,17 +20,17 @@ t('node-set', function() {
 	t('===', node0.size, 2, 'adding to one column changes all columns')
 	t('===', node0.get(1), 1, 'other columns get default values')
 
-	t('===', nodeA.has(0), true)
-	t('===', node0.has(0), true)
-	t('===', nodeA.has(2), false)
-	t('===', node0.has(2), false)
+	t('===', nodeA.get(0), 'AA')
+	t('===', node0.get(0), 0)
+	t('===', nodeA.get(2), undefined)
+	t('===', node0.get(2), undefined)
 
 	t('===', nodeA.data.reduce(function(str, k){return str+=k}, ''), 'AAB')
 	t('===', node0.data.reduce(function(str, k){return str+=k}, ''), '01')
 
 	t('===', node0.del(5), false)
 	t('===', node0.size, 2)
-	t('===', nodeA.has(0), true)
+	t('===', nodeA.get(0), 'AA')
 	t('===', node0.size, 2)
 	t('===', node0.del(0), true)
 	t('===', node0.size, 1)

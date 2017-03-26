@@ -8,6 +8,12 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
+## [0.2.0] - 2017-03-27
+### Changed
+- removed data classes and methods in favor of simple arrays
+- removed `hasNode` and `hasEdge` methods
+- new data columns API
+
 ## [0.1.0] - 2017-03-26
 ### Added
 - First Issue

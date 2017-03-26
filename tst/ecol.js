@@ -3,11 +3,10 @@ var t = require('cotest'),
 
 t('eCol', function() {
 	var graph = new DAG(),
-			edge0 = graph.addEdgeData('0', function() { return this.size }),
+			edge0 = graph.addEdgeData('0', function() { return graph.E-1 }),
 			edgeA = graph.addEdgeData('A', function() { return 'A' })
 	for (var i=0; i<4; ++i) graph.addNode(i)
 
-	t('===', edge0.size, 0)
 	t('===', graph.addEdge(0,1), true)
 	t('===', graph.addEdge(0,2), true)
 	t('===', edgeA.get(0,1), 'A', 'other columns get default values')
@@ -22,19 +21,9 @@ t('eCol', function() {
 
 	t('===', edgeA.data.reduce(function(str, k){return str+=k}, ''), 'AAB')
 	t('===', edge0.data.reduce(function(str, k){return str+=k}, ''), '01')
-	t('===', edge0.data.reduce(function(str, k){return str+=k}, ''), '01')
 
-	//t('===', edge0.del(1,5), false)
-	t('===', edge0.size, 2)
-
-	t('===', edge0.del(0,2), true)
-	t('===', edge0.size, 1)
-	t('===', edgeA.size, 1)
-	t('===', edgeA.get(0,2), undefined, 'deleting one edge deletes it in all other columns')//
-	t('===', edge0.get(0,2), undefined)//
 	t('===', edgeA.get(0,1), 'AA')
 	t('===', edge0.get(0,1), 0)
-	t('===', edge0.size, 1)
 
 	t('===', graph.delEdgeData({}), null)
 	t('===', graph.delEdgeData('0'), edge0)

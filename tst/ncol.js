@@ -7,10 +7,9 @@ Requirements
 */
 t('nCol', function() {
 	var graph = new DAG(),
-			node0 = graph.addNodeData('0', function() { return this.size }),
+			node0 = graph.addNodeData('0', function() { return graph.N-1 }),
 			nodeA = graph.addNodeData('A', function() { return 'A' })
 
-	t('===', node0.size, 0)
 	t('===', graph.addNode(0), true)
 	t('===', graph.addNode(1), true)
 	t('===', nodeA.get(0), 'A', 'other columns get default values')
@@ -26,12 +25,7 @@ t('nCol', function() {
 	t('===', nodeA.data.reduce(function(str, k){return str+=k}, ''), 'AAB')
 	t('===', node0.data.reduce(function(str, k){return str+=k}, ''), '01')
 
-	t('===', node0.del(5), false)
-	t('===', node0.size, 2)
 	t('===', nodeA.get(0), 'AA')
-	t('===', node0.size, 2)
-	t('===', node0.del(0), true)
-	t('===', node0.size, 1)
 
 	t('===', graph.delNodeData('x'), null)
 	t('===', graph.delNodeData('0'), node0)

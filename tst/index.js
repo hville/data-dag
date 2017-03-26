@@ -31,8 +31,8 @@ t('ddag - graph operations', function() {
 })
 t('ddag - toposort integrity', function() {
 	var ctx = new DAG(),
-			nodeIdx = ctx.addNodeData('nodeIndex', function() { return this.size }),
-			edgeIdx = ctx.addEdgeData('edgeIndex', function() { return this.size })
+			nodeIdx = ctx.addNodeData('nodeIndex', function() { return ctx.N-1 }),
+			edgeIdx = ctx.addEdgeData('edgeIndex', function() { return ctx.E-1 })
 
 	t('===', ctx.addNode('A'), true)
 	t('===', ctx.addNode('B'), true)

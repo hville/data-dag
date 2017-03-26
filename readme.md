@@ -48,10 +48,10 @@ Graph structure
 
 Data structure
 
-* `dag.addNodeData(name, getter)` nodeData {get, set, delete}
-* `dag.delNodeData(name, getter)` nodeData {get, set, delete}
-* `dag.addEdgeData(name, getter)` edgeData {get, set, delete}
-* `dag.delEdgeData(name, getter)` edgeData {get, set, delete}
+* `dag.addNodeData(name, getter)` nodeData {get, set}
+* `dag.delNodeData(name, getter)` nodeData {get, set}
+* `dag.addEdgeData(name, getter)` edgeData {get, set}
+* `dag.delEdgeData(name, getter)` edgeData {get, set}
 
 ## License
 

@@ -1,7 +1,7 @@
 var t = require('cotest'),
 		DAG = require('../index')
 
-t('kdag - graph operations', function() {
+t('ddag - graph operations', function() {
 	var ctx = new DAG()
 	//addNode
 	t('===', ctx.addNode(0), true)
@@ -33,7 +33,7 @@ t('kdag - graph operations', function() {
 	//delete Node
 	t('===', ctx.delNode(1), false, 'edges must be deleted first')
 })
-t('kdag - toposort integrity', function() {
+t('ddag - toposort integrity', function() {
 	var ctx = new DAG(),
 			nodeIdx = ctx.addNodeData('nodeIndex', function() { return this.size }),
 			edgeIdx = ctx.addEdgeData('edgeIndex', function() { return this.size })

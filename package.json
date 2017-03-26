@@ -18,7 +18,7 @@
   },
   "scripts": {
     "test": "cotest tst",
-    "min": "webpack --entry ./src/kdag.js --output-filename ./bld/min.js -p"
+    "min": "webpack --entry ./index.js --output-filename ./bld/min.js -p --output-library dataDAG"
   },
   "repository": {
     "type": "git",

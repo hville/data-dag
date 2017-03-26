@@ -1,7 +1,8 @@
-var orderLike = require('./src/order-i'),
+var sort = require('./src/sort'),
 		reduce = require('./src/reduce'),
 		NCol = require('./src/ncol'),
-		ECol = require('./src/ecol')
+		ECol = require('./src/ecol'),
+		topoRank = require('./src/topo')
 
 module.exports = DAG
 
@@ -68,9 +69,10 @@ DAG.prototype = {
 		sn.wells.push(edges[ei])
 
 		// undo if cycles
-		if (!topoRank(nodes, edges)) {
+		if (!topoRank(nodes)) {
 			sn.wells.pop()
 			edges.pop()
+			topoRank(nodes)
 			return false
 		}
 
@@ -167,28 +169,27 @@ DAG.prototype = {
 	topoSort: function() {
 		var nodes = this.nodes,
 				edges = this.edges
+		// flip nodes: old:new => new:old and reorder keys and nodeColumns
+		nodes.forEach(setRank)
+		edges.forEach(setRank)
+		nodes.forEach(setFrom)
+		edges.forEach(setFrom)
 
 		// flip nodes: old:new => new:old and reorder keys and nodeColumns
 		reduce(this.nodeData, reorder, nodes)
-		orderLike(nodes, nodes)
-		nodes.forEach(resetIndex)
+		sort(nodes, nodes)
 
 		// rank edges
 		reduce(this.edgeData, reorder, edges)
-		orderLike(edges, edges)
-		edges.forEach(resetIndex)
+		sort(edges, edges)
 
 		return true
 	}
 }
 function reorder(nodes, set) {
-	orderLike(set.data, nodes)
+	sort(set.data, nodes)
 	return nodes
 }
-function resetIndex(v,i) {
-	v.i = i
-}
-
 // METHODS
 function addNodeData(name, getter) {
 	return addData(this, this.nodeData, name, NCol, getter)
@@ -218,40 +219,6 @@ function wellIndex(wn, sn) {
 	for (var i=0, wells=sn.wells; i<wells.length; ++i) if (wells[i].well === wn) return i
 	return -1
 }
-function topoRank(nodes, edges) {
-	var ranks = {n:0, e:0} // last topoRank of edges and nodes
-
-	// Prep. Convention: Initial:-1; Temp:-2; Final: >=0
-	nodes.forEach(unsetIndex)
-	for (var j=0; j<nodes.length; ++j) if (nodes[j].i < 0) { // not visited
-		ranks = visit(nodes, nodes[j], ranks)
-		if (!ranks) return false
-	}
-	nodes.forEach(invertRanks)
-	edges.forEach(invertRanks)
-	return true
-}
-function invertRanks(v,i,a) {
-	v.i = a[v.i].s = i
-}
-function visit(nodes, node, ranks) {
-	if (node.i === -2) return null // not a DAG
-	if (node.i === -1) {           // not visited
-		node.i = -2                  // temp mark
-		var wells = node.wells
-		for (var i=0; i<wells.length; ++i) {
-			var edge = wells[i]
-			ranks = visit(nodes, edge.well, ranks)
-			if (!ranks) return null
-			edge.i = ranks.e++
-		}
-		node.i = ranks.n++
-	}
-	return ranks
-}
-function unsetIndex(v) {
-	v.i = -1
-}
 function addRow(r, set) {
 	set.data[r] = set.init()
 	return r
@@ -260,3 +227,10 @@ function delRow(r, set) {
 	set.data.splice(r, 1)
 	return r
 }
+function setRank(v) {
+	v.i = v.s
+}
+function setFrom(v,i,a) {
+	a[v.i].s = i
+}
+

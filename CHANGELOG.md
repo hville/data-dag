@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD022 MD024 MD026 MD032 MD041 -->
+<!-- markdownlint-disable MD012 MD022 MD024 MD026 MD032 MD041 -->
 
 # Change Log
 
@@ -7,6 +7,11 @@
 
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
+
+
+## [0.3.0] - 2017-03-30
+### Changed
+- BREAKING: All return values changes from Boolean (hasChanged) to Error Code Numbers
 
 ## [0.2.0] - 2017-03-27
 ### Changed

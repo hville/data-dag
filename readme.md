@@ -40,22 +40,31 @@ console.log(dag.nData.nodeIndex.join('-')) // 3-2-1
 Graph structure
 
 * Nodes
-  * `dag.N` number of nodes
-  * `dag.getNode(nodeKey)` Node Object `{i, s, wells}`
-  * `dag.addNode(nodeKey)` Boolean hasChanged
-  * `dag.delNode(nodeKey)` Boolean hasChanged
+  * Number `dag.N` number of nodes
+  * Object `dag.getNode(nodeKey)` Node `{i, s, wells}`
+  * Number `dag.addNode(nodeKey)` error code or 0
+  * Number `dag.delNode(nodeKey)` error code or 0
 * Edges
-  * `dag.E` number of edges
-  * `dag.getEdge(wellNodeKey, sinkNodeKey)` Edge Object `{i, s, well, sink}`
-  * `dag.addEdge(wellNodeKey, sinkNodeKey)` Boolean hasChanged
-  * `dag.delEdge(wellNodeKey, sinkNodeKey)` Boolean hasChanged
+  * Number `dag.E` number of edges
+  * Object `dag.getEdge(wellNodeKey, sinkNodeKey)` Edge Object `{i, s, well, sink}`
+  * Number `dag.addEdge(wellNodeKey, sinkNodeKey)` error code or 0
+  * Number `dag.delEdge(wellNodeKey, sinkNodeKey)` error code or 0
 * Data Columns
-  * `dag.addEData(name, initSetter)` Boolean hasChanged
-  * `dag.addNData(name, initSetter)` Boolean hasChanged
-  * `dag.delEData(name)` Boolean hasChanged
-  * `dag.delNData(name)` Boolean hasChanged
+  * Number `dag.addEData(name, initSetter)` error code or 0
+  * Number `dag.addNData(name, initSetter)` error code or 0
+  * Number `dag.delEData(name)` error code or 0
+  * Number `dag.delNData(name)` error code or 0
 * Common
-  * `dag.toposort()` Boolean hasChanged - reorders all nodes, edges and datacolunms
+  * Number `dag.toposort()` error code or 0 - reorders all nodes, edges and datacolunms
+
+* Errors
+  * `DAG.DONE = 0` completed, graph changed, no errors
+  * `DAG.EXISTS = 1` duplicate entry, no changes
+  * `DAG.MISSING = 2` non existing entry, nothing deleted
+  * `DAG.CYCLE = 3` cycle detected, no changes
+  * `DAG.LINKED = 4` edges must be deleted before nodes, no changes
+Throws if attempting to add an edge to nodes that don't exist
+
 
 ## License
 

@@ -13,6 +13,13 @@ function DAG() {
 	this.eData = {}
 	this.rInit = new Map()
 }
+var DONE = DAG.DONE = 0, // completed, graph changed
+		EXISTS = DAG.EXISTS = 1, // duplicate entry, no changes
+		MISSING = DAG.MISSING = 2, // non existing entry, nothing deleted
+		CYCLE = DAG.CYCLE = 3, // cycle detected, no changes
+		LINKED = DAG.LINKED = 4 // edges must be deleted before nodes, no changes
+
+
 DAG.prototype = {
 	constructor: DAG,
 	get E() { return this.edges.length },
@@ -46,8 +53,8 @@ DAG.prototype = {
 				sn = nKeys.get(sk),
 				wn = nKeys.get(wk)
 		if (!sn || !wn) throw Error('invalid node keys')
-		if (wn === sn) return false //no cycles
-		if (wellIndex(wn, sn) !== -1) return false //existing
+		if (wn === sn) return CYCLE //no cycles
+		if (wellIndex(wn, sn) !== -1) return EXISTS //existing
 
 		var ei = edges.length
 		edges[ei] = {i:ei, s:ei, well:wn, sink:sn}
@@ -58,12 +65,12 @@ DAG.prototype = {
 			sn.wells.pop()
 			edges.pop()
 			topoRank(nodes)
-			return false
+			return CYCLE
 		}
 
 		// fix columns
 		reduce(this.eData, addRow, this)
-		return true
+		return DONE
 	},
 
 	/**
@@ -77,9 +84,9 @@ DAG.prototype = {
 				nKeys = this.nKeys,
 				sn = nKeys.get(sk),
 				wn = nKeys.get(wk)
-		if (!wn || !sn) return false
+		if (!wn || !sn) return MISSING
 		var iw = wellIndex(wn, sn)
-		if (iw === -1) return false
+		if (iw === -1) return MISSING
 		var ie = sn.wells[iw].i
 		sn.wells.splice(iw, 1)
 		edges.splice(ie, 1)
@@ -87,7 +94,7 @@ DAG.prototype = {
 		// fixes edge indices & columns
 		for (var i=ie; i<edges.length; ++i) --edges[i].i
 		reduce(this.eData, delRow, ie)
-		return true
+		return DONE
 	},
 
 	/**
@@ -106,14 +113,14 @@ DAG.prototype = {
 	addNode: function addNode(nk) {
 		var nKeys = this.nKeys,
 				N = this.nodes.length
-		if (nKeys.has(nk)) return false
+		if (nKeys.has(nk)) return EXISTS
 		// add node
 		var node = {i:N, s:N, k:nk, wells:[]}
 		nKeys.set(nk, node)
 		this.nodes[N] = node
 		// fix columns
 		reduce(this.nData, addRow, this)
-		return true
+		return DONE
 	},
 	/**
 	* @function delNode
@@ -126,8 +133,9 @@ DAG.prototype = {
 				nKeys = this.nKeys,
 				node = nKeys.get(nk)
 		// fail does not exist or has edges
-		if (!node || node.wells.length) return false
-		for (var ie=0; ie<edges.length; ++ie) if (edges[ie].well === node) return false
+		if (!node) return CYCLE
+		if (node.wells.length) return LINKED
+		for (var ie=0; ie<edges.length; ++ie) if (edges[ie].well === node) return LINKED
 
 		// delete node and fix rankings
 		nKeys.delete(nk)
@@ -135,40 +143,40 @@ DAG.prototype = {
 		nodes.splice(r,1)
 		for (var j=0; j<nodes.length; ++j) if (nodes[j].i > r) --nodes[j].i
 		reduce(this.nData, delRow, r)
-		return true
+		return DONE
 	},
 	// COLUMNS
 	addNData: function addNData(name, setter) {
 		var rInit = this.rInit
-		if (rInit.has(name)) return false
+		if (rInit.has(name)) return EXISTS
 		var nCol = this.nData[name] = []
 		var init = setter || noop
 		rInit.set(name, init)
 		for (var i=0; i<this.nodes.length; ++i) nCol[i] = init.call(this,i)
-		return true
+		return DONE
 	},
 	delNData: function delNData(name) {
 		var nData = this.nData
-		if (!nData[name]) return false
+		if (!nData[name]) return MISSING
 		delete nData[name]
 		delete this.nInit[name]
-		return true
+		return DONE
 	},
 	addEData: function addEData(name, setter) {
 		var rInit = this.rInit
-		if (rInit.has(name)) return false
+		if (rInit.has(name)) return EXISTS
 		var eCol = this.eData[name] = []
 		var init = setter || noop
 		rInit.set(name, init)
 		for (var i=0; i<this.edges.length; ++i) eCol[i] = init.call(this,i)
-		return true
+		return DONE
 	},
 	delEData: function delECol(name) {
 		var eData = this.eData
-		if (!eData[name]) return false
+		if (!eData[name]) return MISSING
 		delete eData[name]
 		delete this.eInit[name]
-		return true
+		return DONE
 	},
 	topoSort: topoSort
 }

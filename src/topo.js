@@ -4,7 +4,7 @@ var sort = require('./sort'),
 module.exports = function topoSort() {
 	sortAll(this.nodes, this.nData)
 	sortAll(this.edges, this.eData)
-	return true
+	return 0 //DAG.DONE
 }
 function sortAll(list, data) {
 	list.forEach(setRank)

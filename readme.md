@@ -2,7 +2,7 @@
 
 # data-dag
 
-*directed acylic graph with row or column data fields*
+*directed acylic graph with row or column data fields in under 2kb gzip, no dependencies*
 
 ## Example
 

@@ -63,7 +63,8 @@ Graph structure
   * `DAG.MISSING = 2` non existing entry, nothing deleted
   * `DAG.CYCLE = 3` cycle detected, no changes
   * `DAG.LINKED = 4` edges must be deleted before nodes, no changes
-Throws if attempting to add an edge to nodes that don't exist
+
+Throws if attempting to add an edge to nodes that doesn't exist
 
 
 ## License

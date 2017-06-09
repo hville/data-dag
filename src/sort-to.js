@@ -1,4 +1,4 @@
-module.exports = function sort(order, array) {
+export function sortTo(order, array) {
 	var len = order.length
 
 	for (var i=0; i<len; ++i) if (order[i].i > i && order[i].s > i) {  // if not visited

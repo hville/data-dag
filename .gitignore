@@ -3,6 +3,7 @@ node_modules/
 notes/
 example/
 bld/
+tmp/
 note/
 old/
 *.log

@@ -1,4 +1,5 @@
 /* hugov@runbox.com | https://github.com/hville/data-dag.git | license:MIT */
+var data-dag = (function () {
 'use strict';
 
 function reduce(obj, fcn, res) {
@@ -265,4 +266,6 @@ DataDAG$1.prototype = {
 	topoSort: topoSort
 };
 
-module.exports = DataDAG$1;
+return DataDAG$1;
+
+}());

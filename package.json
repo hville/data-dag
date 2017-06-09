@@ -1,6 +1,6 @@
 {
   "name": "data-dag",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "directed acylic graph with row or column data fields",
   "keywords": [
     "graph",
@@ -12,13 +12,20 @@
   ],
   "author": "Hugo Villeneuve",
   "main": "./index.js",
+  "module": "./module.js",
+  "browser": "./browser.js",
+
   "dependencies": {},
   "devDependencies": {
     "cotest": "^2.1.0"
   },
   "scripts": {
-    "test": "cotest tst",
-    "min": "webpack --entry ./index.js --output-filename ./bld/min.js -p --output-library dataDAG"
+    "test": "npm run build:main & npm run build:sort &cotest ./tst",
+    "build:sort": "rollup -o ./tmp/sort-to.js -f cjs ./src/sort-to.js",
+    "build:main": "rollup -o ./index.js -f cjs --banner \"/* hugov@runbox.com | https://github.com/hville/data-dag.git | license:MIT */\" ./module.js",
+    "build:browser": "rollup -o ./browser.js -f iife -n data-dag --banner \"/* hugov@runbox.com | https://github.com/hville/data-dag.git | license:MIT */\" ./module.js",
+    "build": "npm run build:main & npm run build:browser",
+    "prepublishOnly": "npm test & npm run build:browser"
   },
   "repository": {
     "type": "git",

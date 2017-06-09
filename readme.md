@@ -6,12 +6,14 @@
 
 ## Example
 
+Available in `cjs` (require), `es6` (import) or `browser` (script) formats
+
 ```javascript
-var CDAG = require('data-dag')
+var DAG = require('data-dag') // or import DAG from 'data-dag'
 
 function initValueSetter(name, index, array) { return array.length }
 
-var dag = new IDag(),
+var dag = new DAG(),
 		nodeCol = dag.addNData('nodeIndex', initValueSetter),
 		edgeCol = dag.addEData('edgeIndex', initValueSetter)
 

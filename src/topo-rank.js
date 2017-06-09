@@ -1,4 +1,4 @@
-module.exports = function topoRank(nodes) {
+export function topoRank(nodes) {
 	var ranks = {n:0, e:0} // last topoRank of edges and nodes
 
 	// Prep. Convention: Initial:-1; Temp:-2; Final: >=0

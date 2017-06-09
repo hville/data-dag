@@ -1,5 +1,5 @@
 var t = require('cotest'),
-		sort = require('../src/sort')
+		sort = require('../tmp/sort-to').sortTo
 
 var samples = ['a','b','c','d','e','f']
 

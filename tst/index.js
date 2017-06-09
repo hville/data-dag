@@ -1,5 +1,5 @@
 var t = require('cotest'),
-		DAG = require('../index')
+		DAG = require('../')
 
 t('ddag - graph operations', function() {
 	var ctx = new DAG()

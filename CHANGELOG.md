@@ -8,6 +8,10 @@
 ## [Unreleased]
 ~~Removed, Changed, Deprecated, Added, Fixed, Security~~
 
+## [1.0.1] - 2017-06-17
+### Fixed
+- browser exports variable name
+
 ## [1.0.0] - 2017-06-09
 ### Added
 - added ES6, CJS and browser exports

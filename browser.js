@@ -1,5 +1,5 @@
 /* hugov@runbox.com | https://github.com/hville/data-dag.git | license:MIT */
-var data-dag = (function () {
+var dataDAG = (function () {
 'use strict';
 
 function reduce(obj, fcn, res) {

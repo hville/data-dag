@@ -1,6 +1,6 @@
 {
   "name": "data-dag",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "directed acylic graph with row or column data fields",
   "keywords": [
     "graph",

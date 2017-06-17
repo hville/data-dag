@@ -6,7 +6,10 @@
 
 ## Example
 
-Available in `cjs` (require), `es6` (import) or `browser` (script) formats
+Available in multiple module formats:
+* `cjs`: `require('data-dag')`)
+* `es6`: `import dataDAG from 'data-dag'`
+* `browser`: `window.dataDAG`
 
 ```javascript
 var DAG = require('data-dag') // or import DAG from 'data-dag'

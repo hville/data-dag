@@ -23,7 +23,7 @@
     "test": "npm run build:main & npm run build:sort &cotest ./tst",
     "build:sort": "rollup -o ./tmp/sort-to.js -f cjs ./src/sort-to.js",
     "build:main": "rollup -o ./index.js -f cjs --banner \"/* hugov@runbox.com | https://github.com/hville/data-dag.git | license:MIT */\" ./module.js",
-    "build:browser": "rollup -o ./browser.js -f iife -n data-dag --banner \"/* hugov@runbox.com | https://github.com/hville/data-dag.git | license:MIT */\" ./module.js",
+    "build:browser": "rollup -o ./browser.js -f iife -n dataDAG --banner \"/* hugov@runbox.com | https://github.com/hville/data-dag.git | license:MIT */\" ./module.js",
     "build": "npm run build:main & npm run build:browser",
     "prepublishOnly": "npm test & npm run build:browser"
   },
